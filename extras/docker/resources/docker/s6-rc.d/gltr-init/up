@@ -1,0 +1,17 @@
+#! /eommand/execlineb -P
+
+# this assumes that the username is gltr
+s6-setuidgid gltr
+with-contenv
+importas project_id GLTR_PROJECT_ID
+
+# must be run before the following command, hence separate foreground block
+foreground {
+  mkdir -p /home/gltr/.gltr/secrets/${project_id}
+}
+
+foreground {
+  redirfd -w 1 /home/gltr/.gltr/secrets/${project_id}/${project_id}
+  base64 -d /var/run/s6/container_environment/GLTR_PRIVATE_KEY
+}
+

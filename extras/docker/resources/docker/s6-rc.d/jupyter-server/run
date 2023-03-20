@@ -1,0 +1,6 @@
+#! /command/execlineb -P
+s6-setuidgid gltr
+cd /home/gltr
+# /usr/local/bin/start-notebook.sh --ip 0.0.0.0 --allow-root
+#/usr/local/bin/start-notebook.sh --ip 0.0.0.0
+/opt/conda/bin/jupyter lab --ip 0.0.0.0

@@ -1,0 +1,20 @@
+#! /eommand/execlineb -P
+
+# this assumes that the username is gltr
+s6-setuidgid gltr
+
+# must be run before the following command, hence separate foreground block
+foreground {
+  mkdir -p /home/gltr/.ssh
+}
+
+foreground {
+  redirfd -w 1 /home/gltr/.ssh/gltr
+  base64 -d /var/run/s6/container_environment/GLTR_PRIVATE_KEY
+}
+
+foreground {
+  redirfd -w 1 /home/gltr/.ssh/authorized_keys
+  base64 -d /var/run/s6/container_environment/SSH_PUBLIC_KEY 
+}
+

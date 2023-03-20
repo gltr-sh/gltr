@@ -1,0 +1,33 @@
+#! /command/execlineb -P
+s6-setuidgid gltr
+with-contenv
+importas project_name GLTR_PROJECT_NAME
+
+foreground {
+  importas git_repo_fetch GIT_REPO_FETCH
+  cd /home/gltr
+  #GIT_SSH_COMMAND="ssh -o UserKnownHostsFile=/dev/null -o StrictHostKeyChecking=no" git clone https://github.com/ibm-et/jupyter-samples.git
+  git clone ${git_repo_fetch}
+}
+
+foreground {
+  importas git_repo_push GIT_REPO_PUSH
+  cd /home/gltr/${project_name}
+  git remote set-url --push origin ${git_repo_push}
+}
+
+foreground {
+  backtick USER_EMAIL {
+    base64 -d /var/run/s6/container_environment/GLTR_USER_EMAIL
+  }
+  importas user_email USER_EMAIL
+  git config --global user.email ${user_email} 
+}
+
+foreground {
+  backtick USER_NAME {
+    base64 -d /var/run/s6/container_environment/GLTR_USER_NAME
+  }
+  importas user_name USER_NAME
+  git config --global user.name ${user_name}
+}

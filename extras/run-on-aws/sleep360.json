@@ -1,0 +1,20 @@
+{
+  "requiresCompatibilities": ["FARGATE"],
+  "networkMode": "awsvpc",
+  "containerDefinitions": [
+      {
+          "name": "sleep",
+          "image": "busybox",
+          "cpu": 10,
+          "command": [
+              "sleep",
+              "360"
+          ],
+          "memory": 10,
+          "essential": true
+      }
+  ],
+  "cpu": "1",
+  "memory": "1024",
+  "family": "sleep360"
+}
